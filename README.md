@@ -156,7 +156,7 @@ jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款
 ## 如何获取cookie
 1.用Chrome打开<https://8.9fpuhui.com/login.html>；<br>
 2.输入玖富钱包的用户名、密码，登录；<br>
-登录成功后会跳转到<https://8.9fpuhui.com>；<br>
+登录成功后会跳转到账户中心<https://8.9fpuhui.com/userCenter2/accountCenter.html>；<br>
 3.按F12键打开Chrome开发者工具，刷新页面；<br>
 4.依此点击Chrome开发者工具中的Network->Name中的checkLogin.html->Headers->Request Headers，"Cookie:"后的值即为我们要找的cookie值，复制即可。<br>
 如图所示：
