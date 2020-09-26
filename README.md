@@ -78,7 +78,7 @@ $ python jiufu.py
 本部分为可选部分，如果你不需要自己修改代码或添加新功能，可以忽略此部分。<br>
 本程序所有代码都位于jiufu.py文件，程序主体是一个Jiufu类，上述所有功能都是通过在main函数调用Jiufu类实现的，默认的调用代码如下：
 ```python
-if not os.path.isfile('././cookie.txt'):
+if not os.path.isfile('./cookie.txt'):
     cookie = input(u'工作目录下无cookie.txt文件，请输入Cookie：')
 else:
     with open('./cookie.txt') as f:
