@@ -14,7 +14,7 @@
 
 ## 功能
 爬取持有的出借中订单数据，并将结果信息写入文件。写入信息包括了所有出借订单的所有数据，主要有**订单信息**和**债权信息**两大类，前者包含订单号、产品名称、加入金额、服务期届满时间等等；后者包含借款方、证件号/凭证号、借款用途、借出金额等等，因为内容太多，这里不再赘述，详细内容见[输出](#输出)部分。写入文件类型为**csv文件**。<br>
-如果你还需要每个订单的《出借咨询及管理服务协议》、《授权委托、反洗钱及出借风险提示书》、《数字证书申请表及授权委托书》及每个债权的《借款协议》、《担保合同》，可以通过是否下载附件的选择功能。程序也可以实现**爬取结果自动备份**，即：现在爬取了的所有信息，几天之后，玖富私换更多的逾期标。通过设置，可以实现每隔一小时内的**备份爬取**。具体方法见[定期自动爬取](#7定期自动爬取可选)。<br>
+如果你还需要每个订单的《出借咨询及管理服务协议》、《授权委托、反洗钱及出借风险提示书》、《数字证书申请表及授权委托书》及每个债权的《借款协议》、《担保合同》，可以通过是否下载附件的选择功能。程序也可以实现**定期自动爬取**，具体方法见[定期自动爬取](#6定期自动爬取可选)。<br>
 **不支持悟空理财**，在<https://8.9fpuhui.com>看到的出借中的订单才能爬取。
 
 ## 输出
@@ -33,9 +33,7 @@ cookId=2d43e501-3583-4f23-b427-3236d16d4e88; JSESSIONID=485720964C3BC3E48195C2EF
 ```bash
 $ python jiufu.py
 ```
-也可以直接运行程序，按提示输入Cookie。<br>
-程序会自动生成一个当期日期时间（20200926103000）文件夹，我们本次所爬取的所有信息都被存储在20200926103000文件夹里。<br>
-附件会存放在与csv同名的对应文件夹中。
+也可以直接运行程序，按提示输入Cookie。程序会自动生成一个当前日期时间（20200926103000）文件夹，我们本次所爬取的所有信息都被存储在20200926103000文件夹里。过程中会询问是否下载附件，5秒内无操作将默认不下载。选择下载后，PDF 文档会存放在与csv同名的对应文件夹中。
 
 ## 运行环境
 - 开发语言：Python3
@@ -63,8 +61,7 @@ Cookie一长串字符中上面三个为必需参数，可以按照[如何获取c
 ```bash
 $ python jiufu.py
 ```
-运行;
-针对Windows已经打包成exe文件，无需Python环境直接双击运行。
+运行；针对Windows系统，已经制作打包成exe文件，无需Python环境直接双击运行。
 
 ### 5.按需求修改脚本（可选）
 本部分为可选部分，如果你不需要自己修改代码或添加新功能，可以忽略此部分。<br>
@@ -81,8 +78,7 @@ jf.start()
 ```
 用户可以按照自己的需求调用或修改Jiufu类。<br>
 
-**jf.orders**：存储爬取到的出借中订单信息；<br>
-jf.orders包含爬取到的所有订单信息，如**订单号**、**产品名称**等。jf.orders是一个列表，包含了爬取的所有订单信息。jf.orders[0]为爬取的第一个订单，jf.orders[1]为爬取的第二个订单，以此类推。jf.orders[0][0]为第一个订单的订单号，还有以下其它很多信息。
+**jf.orders**：存储出借中的订单列表，订单包含订单号、产品名称等信息。订单的具体信息如下：
 ```
 - 订单号：如jf.orders[0][0]为第一个订单的订单号；
 - 产品名称：如jf.orders[0][1]为第一个订单的产品名称；
@@ -96,46 +92,43 @@ jf.orders包含爬取到的所有订单信息，如**订单号**、**产品名�
 - 服务期届满时间：如jf.orders[0][9]为第一个订单的服务期届满时间；
 - 剩余天数：如jf.orders[0][10]为第一个订单的剩余天数。
 ```
-**jf.creditors**：存储爬取到的每一个订单的所有债权信息；<br>
-jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款方**、**借款金额**等。jf.creditors是一个列表，包含了爬取的所有债权信息。jf.creditors[0]为爬取的第一条债权，wb.weibo[1]为爬取的第二条债权，以此类推。jf.creditors[0][0]为第一条债权的序号，wb.weibo[0][1]为第一条债权的借款方，以此类推。<br>
-第 i 笔债权的信息如下：
+**jf.creditors**：存储每一笔订单的债权列表，债权包含借款方、借款金额等信息。第 i 笔债权的具体信息如下：
 ```
 - 序号：jf.creditors[i-1][0]为该债权的序号
 - 借款方：jf.creditors[i-1][1]为该债权的借款方
-- 证件号/凭证号
-- 借款用途
-- 借出金额
-- 借款合同期限
-- 保单号
-- 协议
-- 担保函
-- appid
-- 经营状况及财务状况
-- 还款能力变化情况
-- 逾期情况
-- 涉讼情况
-- 受行政处罚情况
-- 其他影响还款的重大信息
-- 还款保障措施
-- 交易时剩余未还期数
-- 交易时借款合同是否到期
-- 借款到期后贷后是否在追踪延期还款
+- 证件号/凭证号：
+- 借款用途：
+- 借出金额：
+- 借款合同期限：
+- 保单号：
+- 协议：
+- 担保函：
+- appid：
+- 经营状况及财务状况：
+- 还款能力变化情况：
+- 逾期情况：
+- 涉讼情况：
+- 受行政处罚情况：
+- 其他影响还款的重大信息：
+- 还款保障措施：
+- 交易时剩余未还期数：
+- 交易时借款合同是否到期：
+- 借款到期后贷后是否在追踪延期还款：
 ````
 
 ### 6.定期自动爬取（可选）
-我们爬取了玖富以后，怀疑玖富会私自替换更多的逾期债权，可以定期爬取备份。本部分为可选部分，如果不需要可以忽略。思路是**利用第三方软件，如crontab，让程序每隔一段时间运行一次**。
+我们可以定期爬取备份。本部分为可选部分，如果不需要可以忽略。思路是**利用第三方软件，如crontab，让程序每隔一段时间运行一次**。
 
 ## 如何获取cookie
 1.用Chrome打开<https://8.9fpuhui.com/login.html>；<br>
-2.输入玖富钱包的用户名、密码，登录成功后会跳转到<https://8.9fpuhui.com/userCenter2/accountCenter.html>账户中心；<br>
+2.输入玖富钱包的用户名、密码，登录成功后会跳转到账户中心；<br>
 3.按F12键打开Chrome开发者工具，刷新页面；<br>
 4.依此点击Chrome开发者工具中的Network->Name中的checkLogin.html->Headers->Request Headers，"Cookie:"后的值即为我们要找的cookie值，复制即可。<br>
 如图所示：
 ![](https://github.com/wongz/jiufu-crawler/blob/master/step.jpg)
 
 ## 如何检测cookie是否有效
-1.无cookie.txt文件，运行程序提示输入Cookie，粘贴进去，如果程序报错提示cookie无效等类似信息，说明cookie无效，否则cookie是有效的；<br>
-2.将获取的cookie填到cookie.txt文件中，运行程序。如果程序提示cookie无效等相关信息，说明cookie无效，否则cookie是有效的。无效时必须删除此文件或修改其Cookie内容，程序**优先读取**cookie.txt文件，读到文件就会跳过输入Cookie这一步。
+如果程序报错提示cookie无效等类似信息，说明cookie无效。若通过文件读取cookie，无效时必须删除此cookie.txt文件或修改其文件内容，程序**优先读取**cookie.txt文件，存在cookie.txt文件就会跳过输入Cookie这一步。
 
 ## Denounce
-**9F Inc.(NASDAQ:JFU), This Company deceives investors by transferring a large number of overdue claims and matured claims to the borrower without the lender's knowledge. The overdue rate exceeds 60%, and the company's shareholders have not responded to doubts, and now the investment cannot be returned**
+**9F Inc.(NASDAQ:JFU), This Company deceives investors by transferring a large number of overdue claims and matured claims to the borrower without the lender's knowledge. The overdue rate exceeds 60%, and the company's shareholders have not responded to doubts, and now the investment cannot be returned.**
