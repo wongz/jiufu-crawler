@@ -13,9 +13,9 @@
 * [如何检测cookie是否有效](#如何检测cookie是否有效)
 
 ## 功能
-爬取持有中的出借订单数据，并将结果信息写入文件。写入信息包括了所有出借订单的所有数据，主要有**订单信息**和**债权信息**两大类，前者包含订单号、产品名称、加入金额、服务期届满时间等等；后者包含借款方、证件号/凭证号、借款用途、借出金额等等，因为内容太多，这里不再赘述，详细内容见[输出](#输出)部分。写入文件类型为**csv文件**
-<br>
+爬取持有中的出借订单数据，并将结果信息写入文件。写入信息包括了所有出借订单的所有数据，主要有**订单信息**和**债权信息**两大类，前者包含订单号、产品名称、加入金额、服务期届满时间等等；后者包含借款方、证件号/凭证号、借款用途、借出金额等等，因为内容太多，这里不再赘述，详细内容见[输出](#输出)部分。写入文件类型为**csv文件**。<br>
 如果你还需要每个订单的《出借咨询及管理服务协议》、《授权委托、反洗钱及出借风险提示书》、《数字证书申请表及授权委托书》及每个债权的《借款协议》、《担保合同》，可以通过是否下载附件的选择功能。程序也可以实现**爬取结果自动备份**，即：现在爬取了的所有信息，几天之后，玖富私换更多的逾期标。通过设置，可以实现每隔一小时内的**备份爬取**。具体方法见[定期自动爬取](#7定期自动爬取可选)。<br>
+**不支持悟空理财**，在<https://8.9fpuhui.com>看到的出借中的订单才能爬取。
 
 ## 输出
 **订单信息**<br>
@@ -167,5 +167,5 @@ jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款
 2.将获取的cookie填到cookie.txt文件中，运行程序。如果程序提示cookie无效等相关信息，说明cookie无效，否则cookie是有效的。<br>
 **无效必须删除此文件或修改内容，程序优先读取cookie.txt文件，读到文件就跳过输入这一步**。
 
-## Remark
+## Denounce
 **9F Inc.(NASDAQ:JFU), This Company deceives investors by transferring a large number of overdue claims and matured claims to the borrower without the lender’s knowledge. The overdue rate exceeds 60%, and the company’s shareholders Have not responded to doubts, and now the investment cannot be returned**
