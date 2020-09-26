@@ -301,7 +301,7 @@ def main():
           u'Network标签点击一条请求在Headers复制出Cookie，像下面这种：')
     print(u'[Cookie: cookId=78b***; JSESSIONID=9B2***; logintoken=a01***]')
     print('')
-    if not os.path.isfile('././cookie.txt'):
+    if not os.path.isfile('./cookie.txt'):
         cookie = input(u'工作目录下无cookie.txt文件，请输入Cookie：')
     else:
         with open('./cookie.txt') as f:
