@@ -160,7 +160,7 @@ jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款
 3.按F12键打开Chrome开发者工具，刷新页面；<br>
 4.依此点击Chrome开发者工具中的Network->Name中的checkLogin.html->Headers->Request Headers，"Cookie:"后的值即为我们要找的cookie值，复制即可。<br>
 如图所示：
-![](https://my.com/cookie.png)
+![](https://github.com/wongz/jiufu-crawler/blob/master/step.jpg)
 
 ## 如何检测cookie是否有效
 1.无cookie.txt文件，运行程序提示输入Cookie，粘贴进去，如果程序报错提示cookie无效等类似信息，说明cookie无效，否则cookie是有效的；<br>
