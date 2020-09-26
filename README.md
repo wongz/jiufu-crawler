@@ -116,28 +116,29 @@ jf.start()
 ```
 用户可以按照自己的需求调用或修改Jiufu类。<br>
 
-**jf.creditors**：存储爬取到的所有债权信息；<br>
+**jf.orders**：存储爬取到的出借中订单信息；<br>
 jf.creditors包含爬取到的所有债权信息，如**借款人**、**借款金额**等。wb.weibo是一个列表，包含了爬取的所有微博信息。wb.weibo[0]为爬取的第一条微博，wb.weibo[1]为爬取的第二条微博，以此类推。wb.weibo[0]['id']为第一条微博的id，wb.weibo[0]['text']为第一条微博的正文，wb.weibo[0]['created_at']为第一条微博的发布时间，还有其它很多信息不在赘述，大家可以点击下面的"详情"查看具体用法。
+
 <details>
-  
+
 <summary>详情</summary>
 
 **user_id**：存储微博用户id。如wb.weibo[0]['user_id']为最新一条微博的用户id；<br>
 **screen_name**：存储微博昵称。如wb.weibo[0]['screen_name']为最新一条微博的昵称；<br>
 **id**：存储微博id。如wb.weibo[0]['id']为最新一条微博的id；<br>
 **text**：存储微博正文。如wb.weibo[0]['text']为最新一条微博的正文；<br>
+
 </details>
 
 **jf.creditors**：存储爬取到的所有债权信息；<br>
 jf.creditors包含爬取到的所有债权信息，如**借款人**、**借款金额**等。wb.weibo是一个列表，包含了爬取的所有微博信息。wb.weibo[0]为爬取的第一条微博，wb.weibo[1]为爬取的第二条微博，以此类推。wb.weibo[0]['id']为第一条微博的id，wb.weibo[0]['text']为第一条微博的正文，wb.weibo[0]['created_at']为第一条微博的发布时间，还有其它很多信息不在赘述，大家可以点击下面的"详情"查看具体用法。
 
-<summary>详情</summary>
-
 <details>
 
-假设爬取到的第i条微博为转发微博，则它存在以下信息：<br>
+<summary>详情</summary>
+
 **user_id**：存储原始微博用户id。wb.weibo[i-1]['retweet']['user_id']为该原始微博的用户id；<br>
-**at_users**：存储原始微博@的用户。wb.weibo[i-1]['retweet']['at_users']为该原始微博@的用户，若该原始微博没有@的用户，则值为''。<br>
+**at_users**：存储原始微博@的用户。wb.weibo[i-1]['retweet']['at_users']为该原始微博@的用户。<br>
 
 </details>
 
