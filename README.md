@@ -126,7 +126,7 @@ jf.creditors包含爬取到的所有债权信息，如**借款人**、**借款�
 **user_id**：存储微博用户id。如wb.weibo[0]['user_id']为最新一条微博的用户id；<br>
 **screen_name**：存储微博昵称。如wb.weibo[0]['screen_name']为最新一条微博的昵称；<br>
 **id**：存储微博id。如wb.weibo[0]['id']为最新一条微博的id；<br>
-**text**：存储微博正文。如wb.weibo[0]['text']为最新一条微博的正文；<br>
+**text**：存储微博正文。如wb.weibo[0]['text']为最新一条微博的正文；
 
 </details>
 
@@ -138,7 +138,7 @@ jf.creditors包含爬取到的所有债权信息，如**借款人**、**借款�
 <summary>详情</summary>
 
 **user_id**：存储原始微博用户id。wb.weibo[i-1]['retweet']['user_id']为该原始微博的用户id；<br>
-**at_users**：存储原始微博@的用户。wb.weibo[i-1]['retweet']['at_users']为该原始微博@的用户。<br>
+**at_users**：存储原始微博@的用户。wb.weibo[i-1]['retweet']['at_users']为该原始微博@的用户。
 
 </details>
 
