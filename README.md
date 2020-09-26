@@ -117,28 +117,35 @@ jf.start()
 用户可以按照自己的需求调用或修改Jiufu类。<br>
 
 **jf.orders**：存储爬取到的出借中订单信息；<br>
-jf.creditors包含爬取到的所有债权信息，如**借款人**、**借款金额**等。wb.weibo是一个列表，包含了爬取的所有微博信息。wb.weibo[0]为爬取的第一条微博，wb.weibo[1]为爬取的第二条微博，以此类推。wb.weibo[0]['id']为第一条微博的id，wb.weibo[0]['text']为第一条微博的正文，wb.weibo[0]['created_at']为第一条微博的发布时间，还有其它很多信息不在赘述，大家可以点击下面的"详情"查看具体用法。
+jf.orders包含爬取到的所有订单信息，如**订单号**、**产品名称**等。wb.weibo是一个列表，包含了爬取的所有微博信息。wb.weibo[0]为爬取的第一条微博，wb.weibo[1]为爬取的第二条微博，以此类推。wb.weibo[0]['id']为第一条微博的id，wb.weibo[0]['text']为第一条微博的正文，wb.weibo[0]['created_at']为第一条微博的发布时间，还有其它很多信息不在赘述，大家可以点击下面的"详情"查看具体用法。
 
 <details>
 
 <summary>详情</summary>
 
-**user_id**：存储微博用户id。如wb.weibo[0]['user_id']为最新一条微博的用户id；<br>
-**screen_name**：存储微博昵称。如wb.weibo[0]['screen_name']为最新一条微博的昵称；<br>
-**id**：存储微博id。如wb.weibo[0]['id']为最新一条微博的id；<br>
-**text**：存储微博正文。如wb.weibo[0]['text']为最新一条微博的正文；
+**订单号**：如jf.orders[0][0]为第一个订单的订单号；<br>
+**产品名称**：如jf.orders[0][1]为第一个订单的产品名称；<br>
+**加入时间**：如jf.orders[0][2]为第一个订单的加入时间；<br>
+**加入金额**：如jf.orders[0][3]为第一个订单的加入金额；<br>
+**起算回报日期**：如jf.orders[0][4]为第一个订单的起算回报日期；<br>
+**参考年回报率**：如jf.orders[0][5]为第一个订单的参考年回报率；<br>
+**服务期**：如jf.orders[0][6]为第一个订单的服务期；<br>
+**期望服务期满总回报**：如jf.orders[0][7]为第一个订单的期望服务期满总回报；<br>
+**服务期届满处理方式**：如jf.orders[0][8]为第一个订单的服务期届满处理方式；<br>
+**服务期届满时间**：如jf.orders[0][9]为第一个订单的服务期届满时间；<br>
+**剩余天数**：如jf.orders[0][10]为第一个订单的剩余天数。
 
 </details>
 
-**jf.creditors**：存储爬取到的所有债权信息；<br>
-jf.creditors包含爬取到的所有债权信息，如**借款人**、**借款金额**等。wb.weibo是一个列表，包含了爬取的所有微博信息。wb.weibo[0]为爬取的第一条微博，wb.weibo[1]为爬取的第二条微博，以此类推。wb.weibo[0]['id']为第一条微博的id，wb.weibo[0]['text']为第一条微博的正文，wb.weibo[0]['created_at']为第一条微博的发布时间，还有其它很多信息不在赘述，大家可以点击下面的"详情"查看具体用法。
+**jf.creditors**：存储爬取到的每一个订单的所有债权信息；<br>
+jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款方**、**借款金额**等。jf.creditors是一个列表，包含了爬取的所有债权信息。jf.creditors[0]为爬取的第一条债权，wb.weibo[1]为爬取的第二条债权，以此类推。jf.creditors[0][0]为第一条债权的序号，wb.weibo[0][1]为第一条债权的借款方，还有其它很多信息不在赘述，大家可以点击下面的"详情"查看具体用法。
 
 <details>
 
 <summary>详情</summary>
 
-**user_id**：存储原始微博用户id。wb.weibo[i-1]['retweet']['user_id']为该原始微博的用户id；<br>
-**at_users**：存储原始微博@的用户。wb.weibo[i-1]['retweet']['at_users']为该原始微博@的用户。
+**序号**：jf.creditors[i-1][0]为该债权的序号；<br>
+**借款方**：jf.creditors[i-1][1]为该债权的借款方。
 
 </details>
 
@@ -148,13 +155,12 @@ jf.creditors包含爬取到的所有债权信息，如**借款人**、**借款�
 
 ## 如何获取cookie
 1.用Chrome打开<https://8.9fpuhui.com/login.html>；<br>
-2.输入玖富钱包的用户名、密码，登录，如图所示：
-![](https://picture.cognize.me/cognize/github/weibospider/cookie1.png)
-登录成功后会跳转到<https://8.9fpuhui.com>;<br>
-3.按F12键打开Chrome开发者工具，刷新页面后会显示如下类似界面:
-![](https://picture.cognize.me/cognize/github/weibospider/cookie2.png)
-4.依此点击Chrome开发者工具中的Network->Name中的weibo.cn->Headers->Request Headers，"Cookie:"后的值即为我们要找的cookie值，复制即可，如图所示：
-![](https://picture.cognize.me/cognize/github/weibospider/cookie3.png)
+2.输入玖富钱包的用户名、密码，登录；<br>
+登录成功后会跳转到<https://8.9fpuhui.com>；<br>
+3.按F12键打开Chrome开发者工具，刷新页面；<br>
+4.依此点击Chrome开发者工具中的Network->Name中的checkLogin.html->Headers->Request Headers，"Cookie:"后的值即为我们要找的cookie值，复制即可。<br>
+如图所示：
+![](https://my.com/cookie.png)
 
 ## 如何检测cookie是否有效
 1.无cookie.txt文件，运行程序提示输入Cookie，粘贴进去，如果程序报错提示cookie无效等类似信息，说明cookie无效，否则cookie是有效的；<br>
