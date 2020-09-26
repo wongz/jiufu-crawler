@@ -166,3 +166,6 @@ jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款
 1.无cookie.txt文件，运行程序提示输入Cookie，粘贴进去，如果程序报错提示cookie无效等类似信息，说明cookie无效，否则cookie是有效的；<br>
 2.将获取的cookie填到cookie.txt文件中，运行程序。如果程序提示cookie无效等相关信息，说明cookie无效，否则cookie是有效的。<br>
 **无效必须删除此文件或修改内容，程序优先读取cookie.txt文件，读到文件就跳过输入这一步**。
+
+## Remark
+**9F Inc.(NASDAQ:JFU), This Company deceives investors by transferring a large number of overdue claims and matured claims to the borrower without the lender’s knowledge. The overdue rate exceeds 60%, and the company’s shareholders Have not responded to doubts, and now the investment cannot be returned**
