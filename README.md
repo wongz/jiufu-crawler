@@ -65,9 +65,7 @@ cookId=2d43e501-3583-4f23-b427-3236d16d4e88; JSESSIONID=485720964C3BC3E48195C2EF
 $ python jiufu.py
 ```
 程序会自动生成一个当期日期时间（20200926103000）文件夹，我们本次所爬取的所有信息都被存储在20200926103000文件夹里。<br>
-**csv文件结果如下所示：**
-![](https://)*ALL_ORDERS.csv*<br>
-本csv文件是爬取的订单列表文件。<br>
+附件会存放在与csv同名的对应文件夹中。
 
 ## 运行环境
 - 开发语言：Python3
@@ -88,7 +86,7 @@ $ pip install -r requirements.txt
 ```
 cookId=2d43e501-3583-4f23-b427-3236d16d4e88; JSESSIONID=485720964C3BC3E48195C2EF50A94188; logintoken=b968be43-f11a-497c-8e91-0982ea862e88
 ```
-下面讲解参数的含义与设置方法。<br>
+Cookie一长串参数中上面三个为必需参数，下面讲解参数的含义与设置方法。<br>
 **设置cookie**<br>
 ```
 your cookie
