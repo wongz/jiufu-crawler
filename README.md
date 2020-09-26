@@ -131,4 +131,4 @@ jf.start()
 如果程序报错提示cookie无效等类似信息，说明cookie无效。若通过文件读取cookie，无效时必须删除此cookie.txt文件或修改其文件内容，程序**优先读取**cookie.txt文件，存在cookie.txt文件就会跳过输入Cookie这一步。
 
 ## Denounce
-**9F Inc.(NASDAQ:JFU), This Company deceives investors by transferring a large number of overdue claims and matured claims to the borrower without the lender's knowledge. The overdue rate exceeds 60%, and the company's shareholders have not responded to doubts, and now the investment cannot be returned.**
+**9F Inc.(NASDAQ:JFU), this company deceives customers, transfers a large number of overdue claims and expired claims to the borrower without the lender's knowledge. The overdue rate exceeds 60%, and the company's shareholders have not responded to queries. The money cannot be returned.**
