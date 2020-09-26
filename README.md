@@ -22,9 +22,7 @@
 
 - 债权列表：ORDER_NO.csv
 
-- 文档（可选）
--- 订单的三种PDF文档放在**ALL_ORDERS**文件夹中
--- 债权的两种PDF文档放在**ORDER_NO**文件夹中
+- 文档（可选）：订单的三种PDF文档放在**ALL_ORDERS**文件夹中；债权的两种PDF文档放在**ORDER_NO**文件夹中
 
 ## 实例
 我们可以创建**cookie.txt**文件，文件内容如下：
