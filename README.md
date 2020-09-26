@@ -22,7 +22,7 @@
 
 - 债权列表：ORDER_NO.csv
 
-- 文档（可选）：订单的三种PDF文档放在**ALL_ORDERS**文件夹中；债权的两种PDF文档放在**ORDER_NO**文件夹中
+- 文档（可选）：订单的三种PDF文档放在**ALL_ORDERS**文件夹中；债权的两种PDF文档放在**ORDER_NO**文件夹中。
 
 ## 实例
 我们可以创建**cookie.txt**文件，文件内容如下：
@@ -123,13 +123,11 @@ jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款
 ````
 
 ### 6.定期自动爬取（可选）
-我们爬取了玖富以后，玖富会不会私自替换更多的逾期债权，可以定期爬取备份。本部分为可选部分，如果不需要可以忽略。<br>
-思路是**利用第三方软件，如crontab，让程序每隔一段时间运行一次**。
+我们爬取了玖富以后，怀疑玖富会私自替换更多的逾期债权，可以定期爬取备份。本部分为可选部分，如果不需要可以忽略。思路是**利用第三方软件，如crontab，让程序每隔一段时间运行一次**。
 
 ## 如何获取cookie
 1.用Chrome打开<https://8.9fpuhui.com/login.html>；<br>
-2.输入玖富钱包的用户名、密码，登录；<br>
-登录成功后会跳转到账户中心<https://8.9fpuhui.com/userCenter2/accountCenter.html>；<br>
+2.输入玖富钱包的用户名、密码，登录成功后会跳转到<https://8.9fpuhui.com/userCenter2/accountCenter.html>账户中心；<br>
 3.按F12键打开Chrome开发者工具，刷新页面；<br>
 4.依此点击Chrome开发者工具中的Network->Name中的checkLogin.html->Headers->Request Headers，"Cookie:"后的值即为我们要找的cookie值，复制即可。<br>
 如图所示：
@@ -137,8 +135,7 @@ jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款
 
 ## 如何检测cookie是否有效
 1.无cookie.txt文件，运行程序提示输入Cookie，粘贴进去，如果程序报错提示cookie无效等类似信息，说明cookie无效，否则cookie是有效的；<br>
-2.将获取的cookie填到cookie.txt文件中，运行程序。如果程序提示cookie无效等相关信息，说明cookie无效，否则cookie是有效的。<br>
-无效时必须删除此文件或修改其Cookie内容，程序**优先读取**cookie.txt文件，读到文件就会跳过输入Cookie这一步。
+2.将获取的cookie填到cookie.txt文件中，运行程序。如果程序提示cookie无效等相关信息，说明cookie无效，否则cookie是有效的。无效时必须删除此文件或修改其Cookie内容，程序**优先读取**cookie.txt文件，读到文件就会跳过输入Cookie这一步。
 
 ## Denounce
-**9F Inc.(NASDAQ:JFU), This Company deceives investors by transferring a large number of overdue claims and matured claims to the borrower without the lender’s knowledge. The overdue rate exceeds 60%, and the company’s shareholders Have not responded to doubts, and now the investment cannot be returned**
+**9F Inc.(NASDAQ:JFU), This Company deceives investors by transferring a large number of overdue claims and matured claims to the borrower without the lender's knowledge. The overdue rate exceeds 60%, and the company's shareholders have not responded to doubts, and now the investment cannot be returned**
