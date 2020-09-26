@@ -91,7 +91,7 @@ jf.start()
 用户可以按照自己的需求调用或修改Jiufu类。<br>
 
 **jf.orders**：存储爬取到的出借中订单信息；<br>
-jf.orders包含爬取到的所有订单信息，如**订单号**、**产品名称**等。wb.weibo是一个列表，包含了爬取的所有微博信息。wb.weibo[0]为爬取的第一条微博，wb.weibo[1]为爬取的第二条微博，以此类推。wb.weibo[0]['id']为第一条微博的id，wb.weibo[0]['text']为第一条微博的正文，wb.weibo[0]['created_at']为第一条微博的发布时间，还有其它很多信息不在赘述，大家可以点击下面的"详情"查看具体用法。
+jf.orders包含爬取到的所有订单信息，如**订单号**、**产品名称**等。jf.orders是一个列表，包含了爬取的所有订单信息。jf.orders[0]为爬取的第一个订单，jf.orders[1]为爬取的第二个订单，以此类推。jf.orders[0][0]为第一个订单的订单号，还有以下其它很多信息。
 
 <details>
 
@@ -112,7 +112,7 @@ jf.orders包含爬取到的所有订单信息，如**订单号**、**产品名�
 </details>
 
 **jf.creditors**：存储爬取到的每一个订单的所有债权信息；<br>
-jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款方**、**借款金额**等。jf.creditors是一个列表，包含了爬取的所有债权信息。jf.creditors[0]为爬取的第一条债权，wb.weibo[1]为爬取的第二条债权，以此类推。jf.creditors[0][0]为第一条债权的序号，wb.weibo[0][1]为第一条债权的借款方，还有其它很多信息不在赘述，大家可以点击下面的"详情"查看具体用法。
+jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款方**、**借款金额**等。jf.creditors是一个列表，包含了爬取的所有债权信息。jf.creditors[0]为爬取的第一条债权，wb.weibo[1]为爬取的第二条债权，以此类推。jf.creditors[0][0]为第一条债权的序号，wb.weibo[0][1]为第一条债权的借款方，还有以下其它很多信息。
 ```
 - 序号：jf.creditors[i-1][0]为该债权的序号；<br>
 - 借款方：jf.creditors[i-1][1]为该债权的借款方。
@@ -137,7 +137,7 @@ jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款
 ````
 
 ### 6.定期自动爬取（可选）
-我们爬取了微博以后，很多微博账号又可能发了一些新微博，定期自动爬取微博就是每隔一段时间自动运行程序，自动爬取这段时间产生的新微博（忽略以前爬过的旧微博）。本部分为可选部分，如果不需要可以忽略。<br>
+我们爬取了玖富以后，玖富会不会私自替换更多的逾期债权，可以定期爬取备份。本部分为可选部分，如果不需要可以忽略。<br>
 思路是**利用第三方软件，如crontab，让程序每隔一段时间运行一次**。
 
 ## 如何获取cookie
@@ -152,7 +152,7 @@ jf.creditors包含爬取到的每一个订单的所有债权信息，如**借款
 ## 如何检测cookie是否有效
 1.无cookie.txt文件，运行程序提示输入Cookie，粘贴进去，如果程序报错提示cookie无效等类似信息，说明cookie无效，否则cookie是有效的；<br>
 2.将获取的cookie填到cookie.txt文件中，运行程序。如果程序提示cookie无效等相关信息，说明cookie无效，否则cookie是有效的。<br>
-**无效必须删除此文件或修改内容，程序优先读取cookie.txt文件，读到文件就跳过输入这一步**。
+无效时必须删除此文件或修改其Cookie内容，程序**优先读取**cookie.txt文件，读到文件就会跳过输入Cookie这一步。
 
 ## Denounce
 **9F Inc.(NASDAQ:JFU), This Company deceives investors by transferring a large number of overdue claims and matured claims to the borrower without the lender’s knowledge. The overdue rate exceeds 60%, and the company’s shareholders Have not responded to doubts, and now the investment cannot be returned**
