@@ -25,9 +25,8 @@ class Jiufu(object):
         self.date_str = datetime.now().strftime('%Y%m%d%H%M%S')
         self.cookie = cookie.replace('Cookie:', '').strip()
         self.dl_tag = 'n'
-        thread = Thread(target=self.dl_choose)
-        thread.daemon = True
-        thread.start()
+        self.thread = Thread(target=self.dl_choose, daemon = False)
+        self.thread.start()
         sleep(5)
         if self.dl_tag.strip() in ['y', 'Y', '1']:
             self.dl = 1
@@ -35,7 +34,6 @@ class Jiufu(object):
         else:
             self.dl = 0
             self.limit = 100
-            print('n')
 
     def dl_choose(self):
         print('')
@@ -104,7 +102,8 @@ class Jiufu(object):
                     count = 0
                     for order in self.orders:
                         count += 1
-                        print(u'{} {} {} {}'.format(order[0], order[4], order[9], order[3].replace('¥', 'Y')))
+                        print(u'{} {} {} {}'.format(order[0], order[4], order[9],
+                                                    order[3].replace('¥', 'Y')))  # unicode输出到cmd为gbk，不支持'¥'编码
                         if self.dl:
                             self.download_file(
                                 'https://8.9fpuhui.com/userCenter2/downloadOrderContract.html?orderNo=' + order[
@@ -123,7 +122,6 @@ class Jiufu(object):
                     self.csv_helper(result_headers, result_data, file_path)
                     return
                 else:
-
                     self.orders.append(order)
 
     def get_one_page(self, page):
@@ -292,6 +290,15 @@ class Jiufu(object):
         except Exception as e:
             print('Error: ', e)
             # traceback.print_exc()
+        finally:
+            # os.system('pause') # 打包为exe，执行完后等待关闭窗口
+            #print(u'程序将在30秒后自动退出...')
+            #sleep(30)
+            print('')
+            if self.thread.is_alive():
+                print(u'请按回车键退出...')   #   线程等待输入会影响进程退出
+            else:
+                input(u'请按回车键退出...')
 
 
 def main():
@@ -309,7 +316,6 @@ def main():
             print(u'读取到工作目录下的cookie.txt文件。')
     jf = Jiufu(cookie)
     jf.start()
-    os.system('pause') # 打包为exe，执行完后等待关闭窗口
 
 
 if __name__ == '__main__':
