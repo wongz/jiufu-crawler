@@ -37,6 +37,52 @@ class Jiufu(object):
         else:
             self.dl = 0
             self.limit = 100
+        self.header_cn = {
+            'freePlan': '免费计划freePlan',
+            'lineThrough': '直通lineThrough',
+            'productCat': '产品productCat',
+            'exceptProfit': '累计期望回报',
+            'allowEdit': '可续期allowEdit',
+            'orderStatus': '订单状态',
+            'expireProcessDesc': '封闭期满处理方式',
+            'cumulativeDesc': '累计期望回报',
+            'orderContinueStatus': '续期',
+            'orderNo': '订单编号',
+            'inFullClaims': '全额索赔inFullClaims',
+            'orderStatusDesc': '订单状态说明',
+            'transferRate': '转让利率transferRate',
+            'productName': '产品名称',
+            'operChannel': '操作渠道',
+            'orderAmount': '出借金额',
+            'sanbiaoMainOrderNo': '三标主订单号sanbiaoMainOrderNo',
+            'remainDays': '剩余天数',
+            'source': '来源source',
+            'totalYield': '期望年化回报率',
+            'assetType': '资产类型assetType',
+            'contractIsExpire': '交易时借款合同是否到期',
+            'argeeUrl': '债权协议',
+            'matchAmount': '借出金额',
+            'repayAbility': '还款能力变化情况',
+            'loanName': '借款方',
+            'repaySafeguards': '还款保障措施',
+            'extendsRatio': '延伸率extendsRatio',
+            'agreeType': '同意类型agreeType',
+            'policyNo': '保单编号policyNo',
+            'remainingIssuePeriod': '交易时剩余未还期数',
+            'repayIsTrack': '借款到期后贷后是否在追踪延期还款',
+            'securityProgramDesc': '第三方限额保障计划Desc',
+            'operatingConditions': '经营状况及财务状况',
+            'overdueSituation': '逾期情况',
+            'loanPeriod': '借款合同期限',
+            'assignorType': '转让类型assignorType',
+            'loanCardNo': '证件号',
+            'caseLitigiousLitigation': '涉诉情况',
+            'loanPurpose': '资金运用情况',
+            'otherRepayInfo': '其他还款信息otherRepayInfo',
+            'securityProgramUrl': '第三方限额保障计划Url',
+            'letterGuarantee': '信用担保letterGuarantee',
+            'administrativePenalties': '受行政处罚情况'
+        }
 
     def dl_choose(self):
         print('')
@@ -66,7 +112,7 @@ class Jiufu(object):
             'user-agent': 'Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Mobile Safari/537.36',
             'useragent': '',
             'version': ''
-            #'cookie': self.cookie
+            # 'cookie': self.cookie
         }
         return headers
 
@@ -102,13 +148,6 @@ class Jiufu(object):
         resp = sessions.post(url, data=json.dumps(params), headers=self.get_headers(url))
         return resp.json()
 
-    def check_need_login(self, resp):
-        page = etree.HTML(resp.text)
-        titles = page.xpath('/html/head/title')
-        for title in titles:
-            if u'登录' in title.text:
-                raise RuntimeError(u'Cookie失效，请在浏览器上登录获取Cookie后重试。')
-
     def get_orders(self):
         page = 0
         wrote_count = 0
@@ -129,7 +168,7 @@ class Jiufu(object):
                     self.write_data(self.orders, wrote_count)
                     return
                 for order in orders:
-                    #order['orderAmount'] = order['orderAmount'].replace(',', '')    #   Windows平台写入csv错误
+                    # order['orderAmount'] = order['orderAmount'].replace(',', '')    #   Windows平台写入csv错误
                     self.orders.append(order)
                     self.got_count += 1
             else:
@@ -173,7 +212,7 @@ class Jiufu(object):
         """"获取要写入结果文件的表头"""
         result_headers = []
         for k, v in result_data[0].items():
-            result_headers.append(k)
+            result_headers.append(self.header_cn[k])
         return result_headers
 
     def get_filepath(self, file_type):
@@ -201,7 +240,6 @@ class Jiufu(object):
         file_path = self.get_filepath('csv')
         self.csv_helper(result_headers, result_data, file_path)
 
-
     def csv_helper(self, headers, result_data, file_path):
         """将指定信息写入csv文件"""
         if not os.path.isfile(file_path):
@@ -228,7 +266,7 @@ class Jiufu(object):
             if not os.path.isfile(file_path):
                 s = requests.Session()
                 s.mount(url, HTTPAdapter(max_retries=5))
-                downloaded = s.get(url, cookies={'Cookie': self.cookie}, timeout=(5, 10))
+                downloaded = s.get(url, timeout=(5, 10))
                 with open(file_path, 'wb') as f:  # w写,b二进制
                     f.write(downloaded.content)
         except Exception as e:
