@@ -133,13 +133,13 @@ class Jiufu(object):
         url = 'https://m.wukonglicai.com/wklc-api/order/query/order-list'
         params = {
             'token': self.token,
-            'productCat': 'Y',
+            'productCat': '',
             'assetType': '',
-            'orderStatus': '0',
+            'orderStatus': '0', #0未结束的订单,1已结束
             'sortField': 'P',
             'continueStatus': '',
             'pageSize': 10,
-            'operChannel': 'WKLC',
+            'operChannel': '',
             'sortType': 1,
             'pageNo': page
         }
@@ -308,9 +308,9 @@ class Jiufu(object):
 
 
 def main():
-    print(u'{}悟空理财导出工具 v{}{}'.format('-' * 20, 1.0, '-' * 20))
+    print(u'{}悟空理财导出工具 v{}{}'.format('-' * 20, 1.1, '-' * 20))
     print('')
-    print(u'说明：谷歌浏览器按F12打开控制台，在m.wukonglicai.com登录成功后，依次点击'
+    print(u'说明：谷歌浏览器先按F12打开控制台，输入m.wukonglicai.com登录成功后，依次点击'
           u'Network->Name列表中的affirm->Preview->展开data，复制出token，像下面这种：')
     print(u'[BB120300-4a7ae99fa2b245068588cd963d948a33]')
     print('')
