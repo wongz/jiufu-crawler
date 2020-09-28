@@ -4,17 +4,17 @@
 import os
 import sys
 import random
-import codecs
+# import codecs
 import csv
 import json
 import traceback
-from collections import OrderedDict
+# from collections import OrderedDict
 from datetime import datetime
 from threading import Thread
 from time import sleep
 
 import requests
-from lxml import etree
+# from lxml import etree
 from requests.adapters import HTTPAdapter
 from hyper.contrib import HTTP20Adapter
 
@@ -86,7 +86,7 @@ class Jiufu(object):
 
     def dl_choose(self):
         print('')
-        self.dl_tag = input(u'请在5秒内选择是否下载附件(默认不下载，若下载耗时较长)(Y/n)? ')
+        self.dl_tag = input(u'请在 5 秒内选择是否下载附件(默认不下载，若下载耗时较长)? [Y/n] ')
 
     def get_headers(self, url):
         headers = {
@@ -109,7 +109,8 @@ class Jiufu(object):
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
             'sysversion': '',
-            'user-agent': 'Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Mobile Safari/537.36',
+            'user-agent': 'Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) '
+                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Mobile Safari/537.36',
             'useragent': '',
             'version': ''
             # 'cookie': self.cookie
@@ -135,7 +136,7 @@ class Jiufu(object):
             'token': self.token,
             'productCat': '',
             'assetType': '',
-            'orderStatus': '0', #0未结束的订单,1已结束
+            'orderStatus': '0',  # 0未结束的订单,1已结束
             'sortField': 'P',
             'continueStatus': '',
             'pageSize': 10,
@@ -176,7 +177,7 @@ class Jiufu(object):
 
     def get_creditors(self):
         page = 0
-        page_count = 1000
+        # page_count = 1000
         wrote_count = 0
         page1 = 0
         random_pages = random.randint(1, 5)
@@ -203,7 +204,7 @@ class Jiufu(object):
             if page % 20 == 0:  # 每爬20页写入一次文件
                 self.write_data(self.creditors, wrote_count)
                 wrote_count = self.got_count
-            if (page - page1) % random_pages == 0 and page < page_count:
+            if (page - page1) % random_pages == 0:  # and page < page_count:
                 sleep(random.randint(1, 3))
                 page1 = page
                 random_pages = random.randint(1, 5)
@@ -251,7 +252,6 @@ class Jiufu(object):
             if is_first_write:
                 writer.writerows([headers])
             writer.writerows(result_data)
-        #	print(u'{} - {}条记录已写入文件：{}'.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), self.got_count, file_path))
 
     def write_data(self, result_data, wrote_count):
         """将爬到的信息写入文件或数据库"""
@@ -310,9 +310,9 @@ class Jiufu(object):
 def main():
     print(u'{}悟空理财导出工具 v{}{}'.format('-' * 20, 1.1, '-' * 20))
     print('')
-    print(u'说明：谷歌浏览器先按F12打开控制台，输入m.wukonglicai.com登录成功后，依次点击'
-          u'Network->Name列表中的affirm->Preview->展开data，复制出token，像下面这种：')
-    print(u'[BB120300-4a7ae99fa2b245068588cd963d948a33]')
+    print(u'说明：谷歌浏览器先按F12打开控制台，输入 https://m.wukonglicai.com 登录成功后，依次点击'
+          u'Network -> Name列表中的affirm -> Preview -> 展开data，复制出token，像下面这种：')
+    print(u'[token: 11223300-4a7ae99fa2b245068588cd963d948a33]')
     print('')
     if not os.path.isfile('./token.txt'):
         token = input(u'工作目录下无token.txt文件，请输入token：')

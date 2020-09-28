@@ -1,5 +1,6 @@
 直接下载对应的exe运行，照着step.jpg图里步骤操作。<br>
 悟空理财请参照玖富钱包的操作方式，登录前先打开浏览器控制台。
+
 * [功能](#功能)
 * [输出](#输出)
 * [实例](#实例)
@@ -129,7 +130,7 @@ jf.start()
 ![](https://github.com/wongz/jiufu-crawler/blob/master/step.jpg)
 
 ## 如何检测cookie是否有效
-如果程序报错提示cookie无效等类似信息，说明cookie无效。若通过文件读取cookie，无效时必须删除此cookie.txt文件或修改其文件内容，程序**优先读取**cookie.txt文件，存在cookie.txt文件就会跳过输入Cookie这一步。
+如果程序报错提示cookie无效等类似信息，说明cookie无效。若通过文件读取cookie，无效时必须删除此cookie.txt文件或修改其文件内容，程序优先读取**cookie.txt**文件，存在cookie.txt文件就会跳过输入Cookie这一步。
 
 ## Denounce
 **9F Inc.(NASDAQ:JFU), this company deceives customers, transfers a large number of overdue claims and expired claims to the borrower without the lender's knowledge. The overdue rate exceeds 60%, and the company's shareholders have not responded to queries. The money cannot be returned.**

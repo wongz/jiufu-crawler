@@ -25,7 +25,7 @@ class Jiufu(object):
         self.date_str = datetime.now().strftime('%Y%m%d%H%M%S')
         self.cookie = cookie.replace('Cookie:', '').strip()
         self.dl_tag = 'n'
-        self.thread = Thread(target=self.dl_choose, daemon = False)
+        self.thread = Thread(target=self.dl_choose, daemon=False)
         self.thread.start()
         sleep(5)
         if self.dl_tag.strip() in ['y', 'Y', '1']:
@@ -37,7 +37,7 @@ class Jiufu(object):
 
     def dl_choose(self):
         print('')
-        self.dl_tag = input(u'请在5秒内选择是否下载附件(默认不下载，若下载耗时较长)(Y/n)? ')
+        self.dl_tag = input(u'请在 5 秒内选择是否下载附件(默认不下载，若下载耗时较长)? [Y/n] ')
 
     def get_creditor_html(self, page):
         url = 'https://8.9fpuhui.com/userCenter2/queryWlzZpListdata.html?'
@@ -105,14 +105,12 @@ class Jiufu(object):
                         print(u'{} {} {} {}'.format(order[0], order[4], order[9],
                                                     order[3].replace('¥', 'Y')))  # unicode输出到cmd为gbk，不支持'¥'编码
                         if self.dl:
-                            self.download_file(
-                                'https://8.9fpuhui.com/userCenter2/downloadOrderContract.html?orderNo=' + order[
-                                    0] + '&1', 'pdf')  # 出借咨询及管理服务协议
-                            self.download_file(
-                                'https://8.9fpuhui.com/antiMoneyLaundering/download.html?orderNo=' + order[
-                                    0] + '&2=&orderType=YX&', 'pdf')  # 授权委托、反洗钱及出借风险提示书
-                            self.download_file('https://8.9fpuhui.com/digitalContract/download.html?orderNo=' + order[
-                                0] + '&3=&orderType=YX&', 'pdf')  # 数字证书申请表及授权委托书
+                            self.download_file('https://8.9fpuhui.com/userCenter2/downloadOrderContract.html?orderNo='
+                                               + order[0] + '&1', 'pdf')  # 出借咨询及管理服务协议
+                            self.download_file('https://8.9fpuhui.com/antiMoneyLaundering/download.html?orderNo='
+                                               + order[0] + '&2=&orderType=YX', 'pdf')  # 授权委托、反洗钱及出借风险提示书
+                            self.download_file('https://8.9fpuhui.com/digitalContract/download.html?orderNo='
+                                               + order[0] + '&3=&orderType=YX', 'pdf')  # 数字证书申请表及授权委托书
                     print(u'{}共获取到{}笔订单{}'.format('-' * 20, count, '-' * 25))
                     print('')
                     result_headers = ['订单号', '产品名称', '加入时间', '加入金额', '起算回报日期', '参考年回报率',
@@ -167,7 +165,7 @@ class Jiufu(object):
 
     def get_result_headers(self):
         """获取要写入结果文件的表头"""
-        result_headers = ['序号', '借款方', '证件号/凭证号', '借款用途', '借出金额', '借款合同期限', '保单号', '协议', '担保函', 'appid', '经营状况及财务状况',
+        result_headers = ['序号', '借款方', '证件号/凭证号', '借款用途', '借出金额', '借款合同期限', '保单号', '借款协议', '担保函', 'appid', '经营状况及财务状况',
                           '还款能力变化情况', '逾期情况', '涉讼情况', '受行政处罚情况', '其他影响还款的重大信息', '还款保障措施', '交易时剩余未还期数',
                           '交易时借款合同是否到期', '借款到期后贷后是否在追踪延期还款']
         return result_headers
@@ -228,7 +226,7 @@ class Jiufu(object):
             if not os.path.isfile(file_path):
                 s = requests.Session()
                 s.mount(url, HTTPAdapter(max_retries=5))
-                downloaded = s.get(url, cookies={'Cookie': self.cookie}, timeout=(5, 10))
+                downloaded = s.get(url, stream=True, timeout=(5, 10))
                 with open(file_path, 'wb') as f:  # w写,b二进制
                     f.write(downloaded.content)
         except Exception as e:
@@ -242,7 +240,7 @@ class Jiufu(object):
 
     def get_pages(self):
         try:
-            page_count = 1000
+            # page_count = 1000
             wrote_count = 0
             page1 = 0
             random_pages = random.randint(1, 5)
@@ -260,7 +258,7 @@ class Jiufu(object):
                 # 通过加入随机等待避免被限制。爬虫速度过快容易被系统限制(一段时间后限
                 # 制会自动解除)，加入随机等待模拟人的操作，可降低被系统限制的风险。
                 # 默认是每爬取1到5页随机等待1到3秒，如果仍然被限，可适当增加sleep时间
-                if (page - page1) % random_pages == 0 and page < page_count:
+                if (page - page1) % random_pages == 0:  # and page < page_count:
                     sleep(random.randint(1, 3))
                     page1 = page
                     random_pages = random.randint(1, 5)
@@ -292,11 +290,11 @@ class Jiufu(object):
             # traceback.print_exc()
         finally:
             # os.system('pause') # 打包为exe，执行完后等待关闭窗口
-            #print(u'程序将在30秒后自动退出...')
-            #sleep(30)
+            # print(u'程序将在30秒后自动退出...')
+            # sleep(30)
             print('')
             if self.thread.is_alive():
-                print(u'请按回车键退出...')   #   线程等待输入会影响进程退出
+                print(u'请按回车键退出...')  # 线程等待输入会影响进程退出
             else:
                 input(u'请按回车键退出...')
 
@@ -304,8 +302,8 @@ class Jiufu(object):
 def main():
     print(u'{}玖富钱包导出工具 v{}{}'.format('-' * 20, 1.3, '-' * 20))
     print('')
-    print(u'说明：谷歌浏览器按F12打开控制台，在玖富普惠官网登录成功后，'
-          u'Network标签点击一条请求在Headers复制出Cookie，像下面这种：')
+    print(u'说明：谷歌浏览器先按F12打开控制台，输入 https://8.9fpuhui.com/login.html 登录成功后，依次点击'
+          u'Network -> Name列表中的checkLogin.html -> Headers -> Request Headers，复制出Cookie，像下面这种：')
     print(u'[Cookie: cookId=78b***; JSESSIONID=9B2***; logintoken=a01***]')
     print('')
     if not os.path.isfile('./cookie.txt'):
