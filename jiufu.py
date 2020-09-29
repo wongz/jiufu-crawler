@@ -4,10 +4,9 @@
 import os
 import sys
 import random
-import codecs
 import csv
 import json
-import traceback
+#   import traceback
 from datetime import datetime
 from threading import Thread
 from time import sleep
@@ -27,30 +26,11 @@ class Jiufu(object):
         self.date_str = datetime.now().strftime('%Y%m%d%H%M%S')
         self.config = config
         self.thread = None
-
-    def init_config(self):
-        config = self.config
-        print('')
-        if 'logintoken' in config:
-            print(u'{}玖富普惠{}'.format('-' * 25, '-' * 25))
-            self.cookie = config.replace('Cookie:', '').strip()
-            self.token = None
-        elif '-' in config:
-            print(u'{}悟空理财{}'.format('-' * 25, '-' * 25))
-            self.cookie = None
-            self.token = config.replace('token:', '').replace('"', '').strip()
-        else:
-            raise RuntimeError(u'输入的内容有误')
+        self.cookie = None
+        self.token = None
         self.dl_tag = 'n'
-        self.thread = Thread(target=self.dl_choose, daemon=False)
-        self.thread.start()
-        sleep(5)
-        if self.dl_tag.strip() in ['y', 'Y', '1']:
-            self.dl = 1
-            self.limit = 10
-        else:
-            self.dl = 0
-            self.limit = 100
+        self.thread = None
+        self.limit = 0
         self.header_cn = {
             'freePlan': '免费计划freePlan',
             'lineThrough': '直通lineThrough',
@@ -98,16 +78,40 @@ class Jiufu(object):
             'administrativePenalties': '受行政处罚情况'
         }
 
+    def init_config(self):
+        config = self.config
+        #print('')
+        if 'logintoken' in config:
+            print(u'{}玖富普惠{}'.format('-' * 25, '-' * 25))
+            self.cookie = config.replace('Cookie:', '').strip()
+            self.token = None
+        elif '-' in config:
+            print(u'{}悟空理财{}'.format('-' * 25, '-' * 25))
+            self.cookie = None
+            self.token = config.replace('token:', '').replace('"', '').strip()
+        else:
+            raise RuntimeError(u'输入的内容有误')
+        self.thread = Thread(target=self.dl_choose, daemon=False)
+        self.thread.start()
+        sleep(5)
+        if self.dl_tag.strip() in ['y', 'Y', '1']:
+            self.dl = 1
+            self.limit = 10
+        else:
+            self.dl = 0
+            self.limit = 100
+
     def dl_choose(self):
-        print('')
+        #print('')
         self.dl_tag = input(u'请在 5 秒内选择是否下载附件(默认不下载，若下载耗时较长)? [Y/n] ')
 
     def get_orders(self):
         page = 0
         print('')
-        print(u'{}获取订单列表{}'.format('-' * 20, '-' * 20))
+        print(u'{}获取订单列表{}'.format('-' * 25, '-' * 25))
         while True:
             page += 1
+            is_end = False
             if self.cookie:
                 is_end = self.get_one_page_orders(page)
             if self.token:
@@ -121,7 +125,7 @@ class Jiufu(object):
                     result_data = [list(w.values()) for w in result_data]
                 file_path = self.get_filepath('csv')
                 self.csv_helper(result_headers, result_data, file_path)
-                print(u'{}获取 {} 笔订单{}'.format('-' * 20, len(self.orders), '-' * 20))
+                print(u'{}获取 {} 笔订单{}'.format('-' * 25, len(self.orders), '-' * 25))
                 print('')
                 break
 
@@ -129,25 +133,25 @@ class Jiufu(object):
         """初始化爬虫信息"""
         self.creditors = []  # 重置
         self.got_count = 0  # 重置
-        self.order_no = order_no #赋值
+        self.order_no = order_no  # 赋值
 
     def get_creditors(self):
-        wrote_count = 0
         page1 = 0
         random_pages = random.randint(1, 5)
         page = 0
         print(u'{}处理订单 {}{}'.format('-' * 10, self.order_no, '-' * 10))
         while True:
             page += 1
+            is_end = False
             if self.cookie:
                 is_end = self.get_one_page_creditors(page)
             if self.token:
                 is_end = self.get_one_page_creditors_wklc(page)
             if is_end:
                 # 全部写入文件
-                result_headers = ['序号', '借款方', '证件号/凭证号', '借款用途', '借出金额', '借款合同期限', '保单号', '借款协议', '担保函', 'appid', '经营状况及财务状况',
-                          '还款能力变化情况', '逾期情况', '涉讼情况', '受行政处罚情况', '其他影响还款的重大信息', '还款保障措施', '交易时剩余未还期数',
-                          '交易时借款合同是否到期', '借款到期后贷后是否在追踪延期还款']
+                result_headers = ['序号', '借款方', '证件号/凭证号', '借款用途', '借出金额', '借款合同期限', '保单号', '借款协议', '担保函', 'appid',
+                                  '经营状况及财务状况', '还款能力变化情况', '逾期情况', '涉讼情况', '受行政处罚情况', '其他影响还款的重大信息',
+                                  '还款保障措施', '交易时剩余未还期数', '交易时借款合同是否到期', '借款到期后贷后是否在追踪延期还款']
                 result_data = self.creditors
                 if self.token:
                     result_headers = self.get_result_headers(result_data)
@@ -268,7 +272,7 @@ class Jiufu(object):
         for row in rows:
             order = []
             selector = row.xpath('./div[3]/p[2]/a')
-            if len(selector) == 0: # 优惠券非出借订单
+            if len(selector) == 0:  # 优惠券非出借订单
                 continue
             order_no = selector[0].get('href')[61:]
             order.append(order_no)  # 订单号
@@ -335,8 +339,8 @@ class Jiufu(object):
                 for col in cols:
                     text = col.text
                     if text:
-                       text = text.strip()
-                       if text == '':
+                        text = text.strip()
+                        if text == '':
                             other = col.xpath('./input')
                             if len(other) > 0:
                                 text = other[0].get('value')
@@ -402,19 +406,24 @@ class Jiufu(object):
             writer.writerows(result_data)
 
     def download_file(self, url, file_type):
+        if not url:
+            return
+        elif 'requestGuarantee' in url:
+            sleep(3)
         file_path = self.get_filepath(file_type) + os.sep + url.split('=')[1] + '.' + file_type
         try:
             if not os.path.isfile(file_path):
                 s = requests.Session()
                 s.mount(url, HTTPAdapter(max_retries=5))
-                downloaded = s.get(url, stream=True, timeout=(5, 10))
+                downloaded = s.get(url, cookies={'Cookie': self.cookie}, stream=True, timeout=(5, 10))   #   不带Cookie 无法下载部分文件
+                if len(downloaded.content) == 0:
+                    raise RuntimeError(u'下载过快，服务器返回空数据 - ' + url.split('=')[1] + '.pdf')
                 with open(file_path, 'wb') as f:  # w写,b二进制
                     f.write(downloaded.content)
         except Exception as e:
-            error_file = self.get_filepath(
-                file_type) + os.sep + 'not_downloaded.txt'
+            error_file = self.get_filepath(file_type) + os.sep + 'not_downloaded.csv'
             with open(error_file, 'ab') as f:
-                url = str(self.order_no) + ':' + file_path + ':' + url + '\n'
+                url = str(self.order_no) + ', ' + file_path + ', ' + url + '\n'
                 f.write(url.encode(sys.stdout.encoding))
             print(u'文件下载失败: ', e)
             # traceback.print_exc()
@@ -426,17 +435,17 @@ class Jiufu(object):
             self.get_orders()
             for order in self.orders:
                 if self.cookie:
-                    order_no = order[0]
+                    self.order_no = order[0]
                 if self.token:
-                    order_no = order['orderNo']
-                self.initialize_info(order_no)
+                    self.order_no = order['orderNo']
+                self.initialize_info(self.order_no)
                 self.get_creditors()
-            print(u'信息获取完毕，文件保存在此目录： %s ' %
+            print(u'信息获取完毕，文件保存在此目录：%s ' %
                   (os.path.split(os.path.realpath(__file__))[0] + os.sep + self.date_str))
         except Exception as e:
             print('')
             print(u'错误: ', e)
-            # traceback.print_exc()
+            #   traceback.print_exc()
         finally:
             print('')
             if self.thread and self.thread.is_alive():
@@ -447,17 +456,19 @@ class Jiufu(object):
 
 def main():
     print(u'{}玖富导出工具 v{}{}'.format('-' * 20, 2.0, '-' * 20))
-    print('')
+    #print('')
     print(u'【使用说明】在谷歌浏览器打开 https://8.9fpuhui.com/login.html 登录成功后，查看是否有持有中的优选出借订单：')
-    print(u'若有，先按 F12 打开控制台后再刷新网页，依次点击'
+    print(u' - 若有，先按 F12 打开控制台后再刷新网页，依次点击'
           u'Network -> Name列表中的checkLogin.html -> Headers -> Request Headers，'
           u'复制出Cookie，像这种：[Cookie: cookId=78b***; JSESSIONID=9B2***; logintoken=a01***]；')
-    print(u'若没有，则打开 https://m.wukonglicai.com ，先按 F12 打开控制台后再登录，依次点击'
+    print(u' - 若没有，则打开 https://m.wukonglicai.com ，先按 F12 打开控制台后再登录，依次点击'
           u'Network -> Name列表中的affirm -> Preview -> 展开data，'
           u'复制出token，像这种：[token: 11223300-4a7ae99fa2b245068588cd963d948a33]。')
-    print('')
+    #print('')
+    print('-' * 60)
+    #print('')
     if not os.path.isfile('./config.txt'):
-        config = input(u'请输入(本窗口标题栏右键 -> 编辑 -> 粘贴)[Cookie/token]：')
+        config = input(u'请输入(本窗口标题栏右键->编辑->粘贴)[Cookie/token]：')
     else:
         with open('./config.txt') as f:
             config = f.read()

@@ -228,7 +228,7 @@ class Jiufu(object):
             if not os.path.isfile(file_path):
                 s = requests.Session()
                 s.mount(url, HTTPAdapter(max_retries=5))
-                downloaded = s.get(url, stream=True, timeout=(5, 10))
+                downloaded = s.get(url, cookies={'Cookie': self.cookie}, stream=True, timeout=(5, 10))
                 with open(file_path, 'wb') as f:  # w写,b二进制
                     f.write(downloaded.content)
         except Exception as e:
