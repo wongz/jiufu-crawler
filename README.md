@@ -66,6 +66,7 @@ $ python jiufu.py
 担保函下载会触发服务器的反爬机制，下载失败的文件列表保存在PDF文件下的not_downloaded.txt中。
 
 ## 操作图示
+这是玖富普惠的操作步骤图。悟空理财请参照，相差不大。
 ![](https://github.com/wongz/jiufu-crawler/blob/master/step.jpg)
 
 ## 如何获取cookie
