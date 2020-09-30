@@ -6,13 +6,14 @@ import sys
 import random
 import csv
 import json
-#   import traceback
+import traceback
 from datetime import datetime
 from threading import Thread
 from time import sleep
 
 import requests
 from lxml import etree
+from tqdm import tqdm
 from requests.adapters import HTTPAdapter
 from hyper.contrib import HTTP20Adapter
 
@@ -25,12 +26,10 @@ class Jiufu(object):
         self.order_no = 'ALL_ORDERS'
         self.date_str = datetime.now().strftime('%Y%m%d%H%M%S')
         self.config = config
-        self.thread = None
         self.cookie = None
         self.token = None
-        self.dl_tag = 'n'
-        self.thread = None
-        self.limit = 0
+        self.files = []
+        self.files_lg = [] # 担保函
         self.header_cn = {
             'freePlan': '免费计划freePlan',
             'lineThrough': '直通lineThrough',
@@ -80,35 +79,21 @@ class Jiufu(object):
 
     def init_config(self):
         config = self.config
-        #print('')
-        if 'logintoken' in config:
-            print(u'{}玖富普惠{}'.format('-' * 25, '-' * 25))
+        if 'JSESSIONID' in config:
+            print(u'{}玖富普惠{}'.format('-' * 20, '-' * 30))
             self.cookie = config.replace('Cookie:', '').strip()
             self.token = None
         elif '-' in config:
-            print(u'{}悟空理财{}'.format('-' * 25, '-' * 25))
+            print(u'{}悟空理财{}'.format('-' * 20, '-' * 30))
             self.cookie = None
             self.token = config.replace('token:', '').replace('"', '').strip()
         else:
             raise RuntimeError(u'输入的内容有误')
-        self.thread = Thread(target=self.dl_choose, daemon=False)
-        self.thread.start()
-        sleep(5)
-        if self.dl_tag.strip() in ['y', 'Y', '1']:
-            self.dl = 1
-            self.limit = 10
-        else:
-            self.dl = 0
-            self.limit = 100
-
-    def dl_choose(self):
-        #print('')
-        self.dl_tag = input(u'请在 5 秒内选择是否下载附件(默认不下载，若下载耗时较长)? [Y/n] ')
 
     def get_orders(self):
         page = 0
         print('')
-        print(u'{}获取订单列表{}'.format('-' * 25, '-' * 25))
+        print(u'{}获取订单列表{}'.format('-' * 20, '-' * 25))
         while True:
             page += 1
             is_end = False
@@ -125,7 +110,7 @@ class Jiufu(object):
                     result_data = [list(w.values()) for w in result_data]
                 file_path = self.get_filepath('csv')
                 self.csv_helper(result_headers, result_data, file_path)
-                print(u'{}获取 {} 笔订单{}'.format('-' * 25, len(self.orders), '-' * 25))
+                print(u'{}获取 {} 笔订单{}'.format('-' * 20, len(self.orders), '-' * 25))
                 print('')
                 break
 
@@ -177,10 +162,10 @@ class Jiufu(object):
         params = {
             'orderNo': self.order_no,
             'pageNum': page,
-            'pageSize': self.limit
+            'pageSize': 100
         }
-        cookie = {'Cookie': self.cookie}
-        resp = requests.post(url, params=params, cookies=cookie)
+        headers = {'Cookie': self.cookie}
+        resp = requests.post(url, headers=headers, params=params)
         self.check_need_login(resp)
         return resp.text
 
@@ -193,8 +178,8 @@ class Jiufu(object):
             'selectName': '',
             'page': page
         }
-        cookie = {'Cookie': self.cookie}
-        resp = requests.post(url, params=params, cookies=cookie)
+        headers = {'Cookie': self.cookie}
+        resp = requests.post(url, headers=headers, params=params)
         self.check_need_login(resp)
         return resp.text
 
@@ -216,20 +201,14 @@ class Jiufu(object):
             'accept-language': 'zh-CN,zh;q=0.9',
             'content-type': 'application/json; charset=UTF-8',
             'referer': 'https://m.wukonglicai.com/weChat/order/order-list?type=Y',
-            'deviceid': '',
             'dnt': '1',
             'origin': 'https://m.wukonglicai.com',
-            'phonetype': '',
             'platform': 'WEIXIN',
             'sec-fetch-dest': 'empty',
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
-            'sysversion': '',
             'user-agent': 'Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) '
-                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Mobile Safari/537.36',
-            'useragent': '',
-            'version': ''
-            # 'cookie': self.cookie
+                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Mobile Safari/537.36'
         }
         return headers
 
@@ -238,7 +217,7 @@ class Jiufu(object):
         params = {
             'orderNo': self.order_no,
             'pageNo': page,
-            'pageSize': self.limit,
+            'pageSize': 100,
             'token': self.token
         }
         sessions = requests.session()
@@ -294,13 +273,12 @@ class Jiufu(object):
                     count += 1
                     print(u'{} {} {} {}'.format(order[0], order[4], order[9],
                                                 order[3].replace('¥', 'Y')))  # unicode输出到cmd为gbk，不支持'¥'编码
-                    if self.dl:
-                        self.download_file('https://8.9fpuhui.com/userCenter2/downloadOrderContract.html?orderNo='
-                                           + order[0] + '&1', 'pdf')  # 出借咨询及管理服务协议
-                        self.download_file('https://8.9fpuhui.com/antiMoneyLaundering/download.html?orderNo='
-                                           + order[0] + '&2=&orderType=YX', 'pdf')  # 授权委托、反洗钱及出借风险提示书
-                        self.download_file('https://8.9fpuhui.com/digitalContract/download.html?orderNo='
-                                           + order[0] + '&3=&orderType=YX', 'pdf')  # 数字证书申请表及授权委托书
+                    self.files.append('https://8.9fpuhui.com/userCenter2/downloadOrderContract.html?orderNo='
+                                           + order[0] + '&1')  # 出借咨询及管理服务协议
+                    self.files.append('https://8.9fpuhui.com/antiMoneyLaundering/download.html?orderNo='
+                                           + order[0] + '&2=&orderType=YX')  # 授权委托、反洗钱及出借风险提示书
+                    self.files.append('https://8.9fpuhui.com/digitalContract/download.html?orderNo='
+                                           + order[0] + '&3=&orderType=YX')  # 数字证书申请表及授权委托书
                 return True
             else:
                 self.orders.append(order)
@@ -324,7 +302,6 @@ class Jiufu(object):
     def get_one_page_creditors(self, page):
         html = self.get_creditor_html(page)
         selector = etree.HTML(html)
-        # print(etree.tostring(selector).decode('utf-8'))
         rows = selector.xpath('/html/body/div[3]/table/tr')
         if len(rows) == 0:
             return True
@@ -348,8 +325,11 @@ class Jiufu(object):
                         other = col.xpath('./a')
                         if len(other) > 0:
                             text = other[0].get('href')
-                            if self.dl and text:
-                                self.download_file(text, 'pdf')
+                            if text:
+                                if 'requestGuarantee' in text:
+                                    self.files_lg.append(text)
+                                else:
+                                    self.files.append(text)
                     creditor.append(text)
                 if row.get('class') == 'checks_ct':  # 更多信息
                     self.creditors.append(creditor)
@@ -365,9 +345,10 @@ class Jiufu(object):
             for creditor in creditors:
                 self.creditors.append(creditor)
                 self.got_count += 1
-                if self.dl:
-                    self.download_file(creditor['argeeUrl'], 'pdf')
-                    self.download_file(creditor['letterGuarantee'], 'pdf')
+                if creditor['argeeUrl']:
+                    self.files.append(creditor['argeeUrl'])
+                if creditor['letterGuarantee']:
+                    self.files_lg.append(creditor['letterGuarantee'])
             print(u'{} - 已获取第 {} 页的 {} 条记录'.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), page, len(creditors)))
         elif js['code'] == '000002':
             return True
@@ -408,16 +389,22 @@ class Jiufu(object):
     def download_file(self, url, file_type):
         if not url:
             return
-        elif 'requestGuarantee' in url:
-            sleep(3)
         file_path = self.get_filepath(file_type) + os.sep + url.split('=')[1] + '.' + file_type
+        headers = {
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'DNT': '1',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10;) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.127 Mobile Safari/537.36',
+            'Accept-Language': 'zh-CN,zh;q=0.9',
+            'Cookie': self.cookie #下载订单相关文档需要Cookie
+        }
         try:
             if not os.path.isfile(file_path):
                 s = requests.Session()
                 s.mount(url, HTTPAdapter(max_retries=5))
-                downloaded = s.get(url, cookies={'Cookie': self.cookie}, stream=True, timeout=(5, 10))   #   不带Cookie 无法下载部分文件
+                downloaded = s.get(url, headers=headers, stream=True, timeout=(5, 10))   #   不带Cookie 无法下载部分文件
                 if len(downloaded.content) == 0:
-                    raise RuntimeError(u'下载过快，服务器返回空数据 - ' + url.split('=')[1] + '.pdf')
+                    raise RuntimeError(u'空文件<' + url.split('=')[1] + '.pdf>')
                 with open(file_path, 'wb') as f:  # w写,b二进制
                     f.write(downloaded.content)
         except Exception as e:
@@ -425,7 +412,7 @@ class Jiufu(object):
             with open(error_file, 'ab') as f:
                 url = str(self.order_no) + ', ' + file_path + ', ' + url + '\n'
                 f.write(url.encode(sys.stdout.encoding))
-            print(u'文件下载失败: ', e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ' - ', e)
             # traceback.print_exc()
 
     def start(self):
@@ -440,23 +427,27 @@ class Jiufu(object):
                     self.order_no = order['orderNo']
                 self.initialize_info(self.order_no)
                 self.get_creditors()
-            print(u'信息获取完毕，文件保存在此目录：%s ' %
+            print(u'信息获取完毕，保存在此目录：%s ' %
                   (os.path.split(os.path.realpath(__file__))[0] + os.sep + self.date_str))
+            if len(self.files) > 0:
+                if input(u'下载相关的 ' + str(len(set(self.files)) + len(set(self.files_lg))) + u' 个文档？[Y/n]') in ['Y', 'y', '1']:
+                    self.order_no = 'PDF'
+                    for url in tqdm(set(self.files), desc=u'协议'):
+                        self.download_file(url, 'pdf')
+                    for url in tqdm(set(self.files_lg), desc=u'担保函'):
+                        self.download_file(url, 'pdf')
+                        sleep(random.randint(5, 20))
         except Exception as e:
             print('')
             print(u'错误: ', e)
-            #   traceback.print_exc()
+            #traceback.print_exc()
         finally:
             print('')
-            if self.thread and self.thread.is_alive():
-                print(u'请按回车键退出...')  # 线程等待输入会影响进程退出
-            else:
-                input(u'请按回车键退出...')
+            input(u'请按回车键退出...')
 
 
 def main():
     print(u'{}玖富导出工具 v{}{}'.format('-' * 20, 2.0, '-' * 20))
-    #print('')
     print(u'【使用说明】在谷歌浏览器打开 https://8.9fpuhui.com/login.html 登录成功后，查看是否有持有中的优选出借订单：')
     print(u' - 若有，先按 F12 打开控制台后再刷新网页，依次点击'
           u'Network -> Name列表中的checkLogin.html -> Headers -> Request Headers，'
@@ -464,9 +455,7 @@ def main():
     print(u' - 若没有，则打开 https://m.wukonglicai.com ，先按 F12 打开控制台后再登录，依次点击'
           u'Network -> Name列表中的affirm -> Preview -> 展开data，'
           u'复制出token，像这种：[token: 11223300-4a7ae99fa2b245068588cd963d948a33]。')
-    #print('')
     print('-' * 60)
-    #print('')
     if not os.path.isfile('./config.txt'):
         config = input(u'请输入(本窗口标题栏右键->编辑->粘贴)[Cookie/token]：')
     else:
