@@ -8,6 +8,7 @@
   * [安装依赖](#2安装依赖)
   * [程序设置](#3程序设置可选)
   * [运行脚本](#4运行脚本)
+ *[操作图示](#操作图示)
 * [如何获取cookie](#如何获取cookie)
 * [如何获取token](#如何获取token)
 
@@ -65,6 +66,9 @@ $ python jiufu.py
 运行；针对Windows系统，已经制作打包成exe文件，无需Python环境直接双击运行。
 担保函下载会触发服务器的反爬机制，下载失败的文件列表保存在PDF文件下的not_downloaded.txt中。
 
+###操作图示
+![](https://github.com/wongz/jiufu-crawler/blob/master/step.jpg)
+
 ## 如何获取cookie
 1.用Chrome打开<https://8.9fpuhui.com/login.html>；<br>
 2.输入玖富钱包的用户名、密码，登录成功后会跳转到账户中心；<br>
@@ -76,9 +80,6 @@ $ python jiufu.py
 2.按F12键打开Chrome开发者工具；<br>
 3.输入悟空理财的用户名、密码，登录；<br>
 4.依此点击Chrome开发者工具中的Network -> Name中的affrim -> Preview -> 展开data，"token:"后的值即为我们要找的token值，复制即可。<br>
-
-###操作图示
-![](https://github.com/wongz/jiufu-crawler/blob/master/step.jpg)
 
 ## Denounce
 **9F Inc.(NASDAQ:JFU), this company deceives customers, transfers a large number of overdue claims and expired claims to the borrower without the lender's knowledge. The overdue rate exceeds 60%, and the company's shareholders have not responded to queries. The money cannot be returned.**
