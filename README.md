@@ -55,8 +55,7 @@ $ pip install -r requirements.txt
 ```
 ### 3.程序设置（可选）
 程序优先读取**config.txt**文件。
-玖富普惠使用Cookie，悟空理财使用token
-可以按照[如何获取cookie](#如何获取cookie)中的方法，获取cookie。
+玖富普惠使用Cookie，悟空理财使用token。
 
 ### 4.运行脚本
 大家可以根据自己的运行环境选择运行方式，Linux可以通过
