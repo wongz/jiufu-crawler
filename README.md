@@ -65,7 +65,7 @@ $ python jiufu.py
 运行；针对Windows系统，已经制作打包成exe文件，无需Python环境直接双击运行。
 担保函下载会触发服务器的反爬机制，下载失败的文件列表保存在PDF文件下的not_downloaded.txt中。
 
-###操作图示
+## 操作图示
 ![](https://github.com/wongz/jiufu-crawler/blob/master/step.jpg)
 
 ## 如何获取cookie
