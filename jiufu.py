@@ -6,9 +6,9 @@ import sys
 import random
 import csv
 import json
-import traceback
+# import traceback
 from datetime import datetime
-from threading import Thread
+# from threading import Thread
 from time import sleep
 
 import requests
@@ -29,7 +29,7 @@ class Jiufu(object):
         self.cookie = None
         self.token = None
         self.files = []
-        self.files_lg = [] # 担保函
+        self.files_lg = []  # 担保函
         self.header_cn = {
             'freePlan': '免费计划freePlan',
             'lineThrough': '直通lineThrough',
@@ -274,11 +274,11 @@ class Jiufu(object):
                     print(u'{} {} {} {}'.format(order[0], order[4], order[9],
                                                 order[3].replace('¥', 'Y')))  # unicode输出到cmd为gbk，不支持'¥'编码
                     self.files.append('https://8.9fpuhui.com/userCenter2/downloadOrderContract.html?orderNo='
-                                           + order[0] + '&1')  # 出借咨询及管理服务协议
+                                      + order[0] + '&1')  # 出借咨询及管理服务协议
                     self.files.append('https://8.9fpuhui.com/antiMoneyLaundering/download.html?orderNo='
-                                           + order[0] + '&2=&orderType=YX')  # 授权委托、反洗钱及出借风险提示书
+                                      + order[0] + '&2=&orderType=YX')  # 授权委托、反洗钱及出借风险提示书
                     self.files.append('https://8.9fpuhui.com/digitalContract/download.html?orderNo='
-                                           + order[0] + '&3=&orderType=YX')  # 数字证书申请表及授权委托书
+                                      + order[0] + '&3=&orderType=YX')  # 数字证书申请表及授权委托书
                 return True
             else:
                 self.orders.append(order)
@@ -396,13 +396,13 @@ class Jiufu(object):
             'DNT': '1',
             'User-Agent': 'Mozilla/5.0 (Linux; Android 10;) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.127 Mobile Safari/537.36',
             'Accept-Language': 'zh-CN,zh;q=0.9',
-            'Cookie': self.cookie #下载订单相关文档需要Cookie
+            'Cookie': self.cookie  # 下载订单相关文档需要Cookie
         }
         try:
             if not os.path.isfile(file_path):
                 s = requests.Session()
                 s.mount(url, HTTPAdapter(max_retries=5))
-                downloaded = s.get(url, headers=headers, stream=True, timeout=(5, 10))   #   不带Cookie 无法下载部分文件
+                downloaded = s.get(url, headers=headers, stream=True, timeout=(5, 10))  # 不带Cookie 无法下载部分文件
                 if len(downloaded.content) == 0:
                     raise RuntimeError(u'空文件<' + url.split('=')[1] + '.pdf>')
                 with open(file_path, 'wb') as f:  # w写,b二进制
@@ -440,7 +440,7 @@ class Jiufu(object):
         except Exception as e:
             print('')
             print(u'错误: ', e)
-            #traceback.print_exc()
+            # traceback.print_exc()
         finally:
             print('')
             input(u'请按回车键退出...')
