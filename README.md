@@ -83,4 +83,4 @@ $ python jiufu.py
 4.依此点击Chrome开发者工具中的Network -> Name中的affrim -> Preview -> 展开data，"token:"后的值即为我们要找的token值，复制即可。<br>
 
 ## Denounce
-**9F Inc.(NASDAQ:JFU), this company deceives customers, transfers a large number of overdue claims and expired claims to the borrower without the lender's knowledge. The overdue rate exceeds 60%, and the company's shareholders have not responded to queries. The money cannot be returned.**
+** 9F Inc. (NASDAQ: JFU), the company deceived its customers by transferring a large number of debts with overdue rates of over 60% to customers without their knowledge. **
